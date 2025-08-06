@@ -1,5 +1,5 @@
 ﻿namespace Engine.Infrastructure.Events;
 
-public class EventBroker
+public class KafkaProducer
 {
 }

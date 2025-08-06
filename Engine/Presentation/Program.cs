@@ -1,6 +1,9 @@
+using Confluent.Kafka;
 using Engine.Application.Interfaces;
+using Engine.Infrastructure.Events;
 using Engine.Infrastructure.Persistence;
 using Engine.Presentation;
+using Microsoft.Extensions.Options;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +13,29 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.Configure<KafkaConfig>(
+    builder.Configuration.GetSection("KafkaConfig"));
+
+builder.Services.AddSingleton(sp =>
+{
+    KafkaConfig config = sp.GetRequiredService<IOptions<KafkaConfig>>().Value;
+    ProducerConfig producerConfig = new() { BootstrapServers = config.BootstrapServers };
+    return new ProducerBuilder<Null, string>(producerConfig).Build();
+});
+
+builder.Services.AddSingleton(sp =>
+{
+    KafkaConfig config = sp.GetRequiredService<IOptions<KafkaConfig>>().Value;
+    ConsumerConfig consumerConfig = new()
+    {
+        BootstrapServers = config.BootstrapServers,
+        GroupId = config.ConsumerGroupId,
+        AutoOffsetReset = AutoOffsetReset.Earliest
+    };
+    return new ConsumerBuilder<string, string>(consumerConfig).Build();
+});
+
 
 // Unit of Work Services
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
