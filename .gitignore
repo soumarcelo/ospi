@@ -1,0 +1,50 @@
+# Arquivos e pastas do .NET
+#############################################
+# Binaries
+[Dd]ebug/
+[Rr]elease/
+bin/
+obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Pacotes e dependências
+/packages
+/node_modules
+
+# Logs
+*.log
+[Ll]ogs/
+
+# Arquivos de configurações secretos
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Test.json
+*.json.user
+
+# Arquivos de backup e de cache
+[Bb]ackup/
+[Cc]ache/
+*.bak
+*.orig
+*.swp
+
+# Docker
+#############################################
+# Arquivos de cache do Docker Compose
+.docker/
+
+# Arquivos de ambiente
+.env
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
