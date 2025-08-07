@@ -28,6 +28,7 @@ O projeto foi estruturado com foco em desacoplamento, testabilidade e manutenibi
 
   * **Arquitetura Limpa (Clean Architecture):** As responsabilidades do projeto são divididas em camadas bem definidas (`Domain`, `Application`, `Infrastructure`, `Presentation`), com um fluxo de dependência que aponta sempre para o núcleo da aplicação.
   * **Padrão Mediator:** O fluxo de requisições é gerenciado por uma camada de **Use Cases** que orquestra a lógica de negócio, seguindo o Princípio da Única Responsabilidade (SRP).
+  * **Autenticação e Autorização com JWT:** Para gerenciar a autenticação de usuários, são utilizados JSON Web Tokens (JWT). Isso permite uma arquitetura stateless (sem estado), onde as informações do usuário são encapsuladas no token, garantindo que o servidor possa validar a identidade e as permissões de acesso sem a necessidade de consultar o banco de dados a cada requisição.
   * **Padrão Unit of Work:** Garante que todas as operações de banco de dados relacionadas a uma única transação de negócio sejam tratadas como uma unidade, mantendo a consistência e integridade dos dados.
   * **Padrão Result:** Operações que podem falhar retornam um objeto `Result<T>` em vez de lançar exceções. Isso proporciona um controle de fluxo de erro explícito, claro e previsível.
   * **Mensageria Assíncrona (MessageBroker):** A comunicação entre as etapas de débito e crédito é feita via **Kafka**, garantindo resiliência e desacoplamento do fluxo transacional.
