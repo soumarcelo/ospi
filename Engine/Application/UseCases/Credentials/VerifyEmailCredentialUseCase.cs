@@ -11,18 +11,18 @@ public class VerifyEmailCredentialUseCase(
     IUnitOfWork unitOfWork,
     IAuthCredentialService authCredentialsService)
 {
-    public async Task<IResult<AuthCredential?>> Execute(EmailAddress email)
+    public async Task<IResult<AuthCredential>> Execute(EmailAddress email)
     {
         IResult<AuthCredential> getResult = await authCredentialsService.GetCredentialByEmailAsync(email);
 
         if (!getResult.TryGetValue(out AuthCredential credential, out Error? error))
         {
-            return Result.Failure<AuthCredential?>($"Failed to retrieve credential: {error?.Message}");
+            return Result.Failure<AuthCredential>($"Failed to retrieve credential: {error?.Message}");
         }
 
         if (credential.IsVerified)
         {
-            return Result.Success<AuthCredential?>(credential);
+            return Result.Success(credential);
         }
         
         await unitOfWork.BeginTransactionAsync();
@@ -34,7 +34,7 @@ public class VerifyEmailCredentialUseCase(
         if (!updateResult.TryGetValue(out Guid _, out error))
         {
             await unitOfWork.RollbackTransactionAsync();
-            return Result.Failure<AuthCredential?>($"Failed to update credential: {error?.Message}");
+            return Result.Failure<AuthCredential>($"Failed to update credential: {error?.Message}");
         }
 
         try
@@ -42,12 +42,12 @@ public class VerifyEmailCredentialUseCase(
             await unitOfWork.SaveChangesAsync();
             await unitOfWork.CommitTransactionAsync();
 
-            return Result.Success<AuthCredential?>(credential);
+            return Result.Success(credential);
         }
         catch (Exception ex)
         {
             await unitOfWork.RollbackTransactionAsync();
-            return Result.Failure<AuthCredential?>($"An error occurred while verifying the email credential: {ex.Message}");
+            return Result.Failure<AuthCredential>($"An error occurred while verifying the email credential: {ex.Message}");
         }
     }
 }

@@ -13,7 +13,7 @@ public class SignUpController(
     SignUpUseCase signUpUseCase) : ControllerBase
 {
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromBody] SignUpDTO body)
+    public async Task<ActionResult> SignUp([FromBody] SignUpDTO body)
     {
         SignUpRequest request = SignUpRequest.FromDTO(body);
 

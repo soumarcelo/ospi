@@ -31,6 +31,9 @@ builder.Services.AddSingleton(sp =>
 builder.Services
     .AddKafkaConsumerService<string, string, InternalPixTransferDebitRequestedEventHandler>(
         InternalPixTransferDebitRequestedEventHandler.Topic);
+builder.Services
+    .AddKafkaConsumerService<string, string, InternalPixTransferCreditRequestedEventHandler>(
+        InternalPixTransferCreditRequestedEventHandler.Topic);
 
 // Unit of Work Services
 builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();

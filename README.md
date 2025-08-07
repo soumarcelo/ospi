@@ -2,7 +2,7 @@
 
 ### 📖 Sobre o Projeto
 
-O **OSPI Engine** é um MVP experimental de microsserviço back-end desenvolvido em **.NET 8** focado, inicialmente, no processamento de pagamentos via Pix. Sua principal função é orquestrar a lógica de débito e crédito em transferências internas, garantindo a integridade transacional e a comunicação assíncrona com outros serviços através de uma arquitetura robusta e escalável.
+O **OSPI Engine** é um MVP experimental de microsserviço back-end desenvolvido em **.NET 9** focado, inicialmente, no processamento de pagamentos via Pix. Sua principal função é orquestrar a lógica de débito e crédito em transferências internas, garantindo a integridade transacional e a comunicação assíncrona com outros serviços através de uma arquitetura robusta e escalável.
 
 Este projeto foi construído para demonstrar a aplicação de padrões de arquitetura modernos, boas práticas de desenvolvimento e a criação de um sistema resiliente e observável.
 
@@ -36,7 +36,7 @@ O projeto foi estruturado com foco em desacoplamento, testabilidade e manutenibi
 
 ### 🚀 Tecnologias Utilizadas
 
-  * **.NET 8:** Framework de desenvolvimento
+  * **.NET 9:** Framework de desenvolvimento
   * **C\# 12:** Linguagem de programação
   * **Entity Framework Core:** ORM (Object-Relational Mapper)
   * **PostgreSQL:** Banco de dados relacional
@@ -49,7 +49,7 @@ O projeto foi estruturado com foco em desacoplamento, testabilidade e manutenibi
 Para iniciar o ambiente de desenvolvimento, incluindo o Kafka e o Zookeeper, siga os passos abaixo:
 
 1.  Clone o repositório: `git clone https://github.com/soumarcelo/ospi.git`
-2.  Navegue até a pasta raiz do projeto: `cd engine`
+2.  Navegue até a pasta raiz do projeto: `cd Engine`
 3.  Execute o Docker Compose para subir os serviços:
     ```bash
     docker-compose up --build
