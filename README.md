@@ -60,6 +60,7 @@ Para iniciar o ambiente de desenvolvimento, incluindo o Kafka e o Zookeeper, sig
 
 O projeto está em constante evolução. Abaixo estão algumas das próximas etapas planejadas para a sua conclusão:
 
+  * [ ] Adicionar comentários em todos métodos e classes importantes.
   * [ ] Implementar o processo completo de crédito após a transação de débito.
   * [ ] Adicionar autenticação e autorização para as rotas da API.
   * [ ] Criar testes de integração e de unidade para as camadas de `Application` e `Infrastructure`.

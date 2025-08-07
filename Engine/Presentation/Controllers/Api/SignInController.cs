@@ -1,5 +1,6 @@
 ﻿using Engine.Application.Common.Errors;
 using Engine.Application.Common.Results;
+using Engine.Application.DTOs.AuthCredentials;
 using Engine.Application.DTOs.Users;
 using Engine.Application.Requests;
 using Engine.Application.UseCases.Users;
@@ -12,11 +13,11 @@ namespace Engine.Presentation.Controllers.Api;
 public class SignInController(SignInUseCase signInUseCase, Logger<SignInController> logger) : ControllerBase
 {
     [HttpPost("signin")]
-    public async Task<ActionResult<SignInResponseDTO>> SignIn([FromBody] SignInDTO body)
+    public async Task<ActionResult<AuthTokenDTO>> SignIn([FromBody] SignInDTO body)
     {
         SignInRequest request = SignInRequest.FromDTO(body);
-        IResult<SignInResponseDTO> result = await signInUseCase.Execute(request);
-        if (!result.TryGetValue(out SignInResponseDTO? response, out Error? error))
+        IResult<AuthTokenDTO> result = await signInUseCase.Execute(request);
+        if (!result.TryGetValue(out AuthTokenDTO response, out Error? error))
         {
             logger.LogError(
                 "Sign-in request failed for email: {Email}. Error: {ErrorMessage}",

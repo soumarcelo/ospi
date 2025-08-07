@@ -1,4 +1,5 @@
-﻿using Engine.Application.Common.Results;
+﻿using Engine.Application.Common.Errors;
+using Engine.Application.Common.Results;
 using Engine.Application.DTOs.Users;
 using Engine.Application.Requests;
 using Engine.Application.UseCases.Users;
@@ -18,14 +19,13 @@ public class SignUpController(
         SignUpRequest request = SignUpRequest.FromDTO(body);
 
         IResult<Guid> result = await signUpUseCase.Execute(request);
-
-        if (!result.IsSuccess)
+        if (!result.TryGetValue(out Guid _, out Error? error))
         {
             logger.LogError(
-                "Sign-up request failed for email: {Email}. Error: {ErrorMessage}", 
+                "Sign-up request failed for email: {Email}. Error: {ErrorMessage}",
                 request.Email,
-                result.ErrorMessage);
-            return BadRequest(result.ErrorMessage);
+                error?.Message);
+            return BadRequest(error?.Message ?? "An unknown error occurred.");
         }
 
         logger.LogInformation("Sign-up request successful for email: {Email}", request.Email);
