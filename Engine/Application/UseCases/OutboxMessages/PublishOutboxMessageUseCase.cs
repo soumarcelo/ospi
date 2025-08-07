@@ -12,7 +12,6 @@ namespace Engine.Application.UseCases.OutboxMessages;
 public class PublishOutboxMessageUseCase(
     IUnitOfWork unitOfWork,
     IOutboxMessageService outboxMessageService,
-    IOutboxMessageRepository outboxMessageRepository,
     IEventDeserializerService eventDeserilizerService,
     IEventPublisher eventPublisher)
 {

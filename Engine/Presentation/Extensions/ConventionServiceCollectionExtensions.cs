@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 //using Microsoft.Extensions.DependencyInjection;
 
-namespace Engine.Presentation;
+namespace Engine.Presentation.Extensions;
 
 public static class ConventionServiceCollectionExtensions
 {

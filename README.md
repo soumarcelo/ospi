@@ -31,6 +31,7 @@ O projeto foi estruturado com foco em desacoplamento, testabilidade e manutenibi
   * **Padrão Unit of Work:** Garante que todas as operações de banco de dados relacionadas a uma única transação de negócio sejam tratadas como uma unidade, mantendo a consistência e integridade dos dados.
   * **Padrão Result:** Operações que podem falhar retornam um objeto `Result<T>` em vez de lançar exceções. Isso proporciona um controle de fluxo de erro explícito, claro e previsível.
   * **Mensageria Assíncrona (MessageBroker):** A comunicação entre as etapas de débito e crédito é feita via **Kafka**, garantindo resiliência e desacoplamento do fluxo transacional.
+  * **Padrão Strategy (nos Consumidores Kafka):** A lógica de consumo de mensagens do Kafka é desacoplada da lógica de negócio do evento. Isso permite que a mesma classe de consumidor genérico seja reutilizada para processar diferentes tipos de eventos, promovendo a reutilização de código e aderindo ao Princípio da Responsabilidade Única (SRP).
   * **Idempotência:** Mecanismos foram implementados para garantir que o processamento de eventos do Kafka seja seguro para ser executado múltiplas vezes sem causar efeitos colaterais indesejados.
 
 ### 🚀 Tecnologias Utilizadas

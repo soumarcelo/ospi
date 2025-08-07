@@ -16,7 +16,6 @@
   <ItemGroup>
     <Folder Include="Application\Mappers\" />
     <Folder Include="Application\Validators\" />
-    <Folder Include="Domain\ValueObjects\OutboxMessageData\" />
     <Folder Include="Infrastructure\ExternalServices\" />
     <Folder Include="Infrastructure\Migrations\" />
     <Folder Include="Presentation\Filters\" />
