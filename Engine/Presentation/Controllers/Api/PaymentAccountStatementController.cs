@@ -1,10 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Engine.Application.Common.Errors;
+using Engine.Application.Common.Results;
+using Engine.Application.DTOs.Transactions;
+using Engine.Application.UseCases.Transactions;
+using Engine.Presentation.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Engine.Presentation.Controllers.Api;
 
 [ApiController]
-[Route("api")]
+[Route("api/v1")]
+[ResultFilter]
 public class PaymentAccountStatementController(
+    GetPaymentAccountStatementUseCase statementUseCase,
     ILogger<PaymentAccountStatementController> logger) : ControllerBase
 {
+    [HttpGet("payment-accounts/{accountId}/statement")]
+    public async Task<IResult<IList<StatementTransactionDTO>>> GetStatement(
+        [FromRoute] Guid accountId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+    {
+        IResult<IList<StatementTransactionDTO>> result = await statementUseCase.Execute(accountId);
+        if (result.IsSuccess)
+        {
+            logger.LogInformation(
+                "Retrieved statement for account {AccountId} with {TransactionCount} transactions.",
+                accountId,
+                result.Value?.Count ?? 0);
+        }
+        else
+        {
+            Error? error = result.Error;
+            logger.LogError(
+                "Failed to retrieve statement for account {AccountId}: {ErrorMessage}",
+                accountId,
+                error?.Message);
+        }
+
+        return result;
+    }
 }

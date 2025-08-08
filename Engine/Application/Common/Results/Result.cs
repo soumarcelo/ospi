@@ -1,4 +1,5 @@
 ﻿using Engine.Application.Common.Errors;
+using Engine.Application.Enums;
 
 namespace Engine.Application.Common.Results;
 
@@ -9,13 +10,15 @@ public static class Result
 
     public static IResult Failure(
         string errorMessage,
-        string? errorCode = null)
-        => new FailureResult(errorMessage, errorCode);
+        string? errorCode = null,
+        ErrorType errorType = ErrorType.Unknown)
+        => new FailureResult(errorMessage, errorCode, errorType);
 
     public static IResult<TValue> Failure<TValue>(
         string errorMessage,
-        string? errorCode = null)
-        => new FailureResult<TValue>(errorMessage, errorCode);
+        string? errorCode = null,
+        ErrorType errorType = ErrorType.Unknown)
+        => new FailureResult<TValue>(errorMessage, errorCode, errorType);
 
     public static bool TryGetValue<T>(
         this IResult<T> result,
@@ -25,12 +28,12 @@ public static class Result
         if (result.IsSuccess && result.Value is not null)
         {
             value = result.Value;
-            error = new(null, null);
+            error = null;
             return true;
         }
 
         value = default!;
-        error = new(result.ErrorMessage, result.ErrorCode);
+        error = result.Error;
         return false;
     }
 

@@ -1,16 +1,19 @@
-﻿namespace Engine.Application.Common.Results;
+﻿using Engine.Application.Common.Errors;
+using Engine.Application.Enums;
 
-public class FailureResult(string errorMessage, string? errorCode = null) : IResult
+namespace Engine.Application.Common.Results;
+
+public class FailureResult(
+    string errorMessage, string? errorCode = null, ErrorType errorType = ErrorType.Unknown) : IResult
 {
     public bool IsSuccess => false;
-    public string? ErrorMessage { get; } = errorMessage;
-    public string? ErrorCode { get; } = errorCode;
+    public Error? Error { get; } = new(errorMessage, errorCode, errorType);
 }
 
-public class FailureResult<TValue>(string errorMessage, string? errorCode = null) : IResult<TValue>
+public class FailureResult<TValue>(
+    string errorMessage, string? errorCode = null, ErrorType errorType = ErrorType.Unknown) : IResult<TValue>
 {
     public bool IsSuccess => false;
-    public string? ErrorMessage { get; } = errorMessage;
-    public string? ErrorCode { get; } = errorCode;
+    public Error? Error { get; } = new(errorMessage, errorCode, errorType);
     public TValue? Value => default;
 }
