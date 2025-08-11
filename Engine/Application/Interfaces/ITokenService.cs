@@ -10,7 +10,7 @@ public interface ITokenService
     /// </summary>
     /// <param name="userId">The ID of the user for whom the token is generated.</param>
     /// <returns>A string representing the JWT token.</returns>
-    public AuthTokenDTO GenerateToken(User user, AuthCredential credential);
+    public Task<AuthTokenDTO> GenerateToken(User user, AuthCredential credential);
 
     /// <summary>
     /// Validates the provided JWT token.

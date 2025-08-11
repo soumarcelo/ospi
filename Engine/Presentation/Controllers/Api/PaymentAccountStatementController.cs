@@ -3,18 +3,21 @@ using Engine.Application.Common.Results;
 using Engine.Application.DTOs.Transactions;
 using Engine.Application.UseCases.Transactions;
 using Engine.Presentation.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Engine.Presentation.Controllers.Api;
 
 [ApiController]
 [Route("api/v1")]
+[Authorize]
 [ResultFilter]
 public class PaymentAccountStatementController(
     GetPaymentAccountStatementUseCase statementUseCase,
     ILogger<PaymentAccountStatementController> logger) : ControllerBase
 {
     [HttpGet("payment-accounts/{accountId}/statement")]
+    [PermissionAuthorization("PaymentAccountStatement.Read")]
     public async Task<IResult<IList<StatementTransactionDTO>>> GetStatement(
         [FromRoute] Guid accountId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
     {

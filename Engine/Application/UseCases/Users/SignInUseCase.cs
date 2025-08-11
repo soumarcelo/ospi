@@ -1,16 +1,11 @@
 ﻿using Engine.Application.Common.Errors;
 using Engine.Application.Common.Results;
 using Engine.Application.DTOs.AuthCredentials;
-using Engine.Application.DTOs.Users;
 using Engine.Application.Interfaces;
-
-
-//using Engine.Application.Interfaces;
 using Engine.Application.Interfaces.Services;
 using Engine.Application.Requests;
 using Engine.Domain.Entities;
 using Engine.Domain.Enums;
-using Engine.Domain.ValueObjects;
 
 namespace Engine.Application.UseCases.Users;
 
@@ -43,7 +38,7 @@ public class SignInUseCase(
             return Result.Failure<AuthTokenDTO>("Invalid password.");
         }
 
-        AuthTokenDTO token = tokenService.GenerateToken(user, credential);
+        AuthTokenDTO token = await tokenService.GenerateToken(user, credential);
         return Result.Success(token);
         
         //await unitOfWork.BeginTransactionAsync();

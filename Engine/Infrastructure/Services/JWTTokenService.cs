@@ -1,6 +1,7 @@
 ﻿using Engine.Application.DTOs.AuthCredentials;
 using Engine.Application.Interfaces;
 using Engine.Domain.Entities;
+using Engine.Domain.ValueObjects;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,9 +9,11 @@ using System.Text;
 
 namespace Engine.Infrastructure.Services;
 
-public class JWTTokenService(IConfiguration configuration) : ITokenService
+public class JWTTokenService(
+    IConfiguration configuration,
+    IAuthorizationService authorizationService) : ITokenService
 {
-    public AuthTokenDTO GenerateToken(User user, AuthCredential credential)
+    public async Task<AuthTokenDTO> GenerateToken(User user, AuthCredential credential)
     {
         string? secret = configuration["JwtSettings:Secret"];
         string? issuer = configuration["JwtSettings:Issuer"];
@@ -18,13 +21,23 @@ public class JWTTokenService(IConfiguration configuration) : ITokenService
         SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(secret ?? ""));
         SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
 
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+        IList<AuthorizationPermission> userPermissions = 
+            await authorizationService.GetUserPermissions(user.Id);
+
+        Guid jtiId = Guid.NewGuid();
+        Guid userId = user.Id;
+        List<Claim> claims =
+        [
+            new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, credential.ProviderKey),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, jtiId.ToString()),
             new Claim(JwtRegisteredClaimNames.Name, user.FullName)
-        };
+        ];
+
+        foreach (AuthorizationPermission permission in userPermissions)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, permission.ToString()));
+        }
 
         JwtSecurityToken token = new(
             issuer: issuer,
