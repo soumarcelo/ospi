@@ -6,17 +6,17 @@ using Engine.Presentation.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Engine.Presentation.Controllers.Api;
+namespace Engine.Presentation.Controllers.Api.PaymentAccounts;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/payment-accounts")]
 [Authorize]
 [ResultFilter]
 public class PaymentAccountStatementController(
     GetPaymentAccountStatementUseCase statementUseCase,
     ILogger<PaymentAccountStatementController> logger) : ControllerBase
 {
-    [HttpGet("payment-accounts/{accountId}/statement")]
+    [HttpGet("{accountId}/statement")]
     [PermissionAuthorization("PaymentAccountStatement.Read")]
     public async Task<IResult<IList<StatementTransactionDTO>>> GetStatement(
         [FromRoute] Guid accountId, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)

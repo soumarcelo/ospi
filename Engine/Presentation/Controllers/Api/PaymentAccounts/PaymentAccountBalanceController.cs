@@ -5,17 +5,17 @@ using Engine.Presentation.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Engine.Presentation.Controllers.Api;
+namespace Engine.Presentation.Controllers.Api.PaymentAccounts;
 
 [ApiController]
-[Route("api/v1")]
+[Route("api/v1/payment-accounts")]
 [Authorize]
 [ResultFilter]
 public class PaymentAccountBalanceController(
     GetPaymentAccountBalanceUseCase balanceUseCase,
     ILogger<PaymentAccountBalanceController> logger) : ControllerBase
 {
-    [HttpGet("payment-accounts/{accountId}/balance")]
+    [HttpGet("{accountId}/balance")]
     [PermissionAuthorization("PaymentAccountBalance.Read")]
     public async Task<IResult<decimal>> GetBalance([FromRoute] Guid accountId)
     {
