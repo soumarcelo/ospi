@@ -53,9 +53,7 @@ services:
       - kafka
       - db
     environment:
-      # Exemplo de como sua aplicação pode acessar o Kafka
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      # Exemplo de como sua aplicação pode acessar o Postgres
       DATABASE_HOST: db
       DATABASE_USER: ${POSTGRES_USER}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}

@@ -9,15 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace Engine.Presentation.Controllers.Api.Transfers;
 
 [ApiController]
-[Route("api/v1/transfers")]
+[Route("api/v1/transfers/pix")]
 [Authorize]
 [ResultFilter]
 public class PixTransferController(
     DebitInternalPixTransactionUseCase debitPixUseCase,
     ILogger<PixTransferController> logger) : ControllerBase
 {
-    [HttpPost("pix")]
-    [PermissionAuthorization("PaymentAccountBalance.Read")]
+    [HttpPost("internal")]
+    [PermissionAuthorization("PixTransfer.Write")]
     public async Task<IResult<Guid>> DebitPix([FromBody] CreatePixTransactionDTO dto)
     {
         IResult<Guid> result = await debitPixUseCase.Execute(dto);
